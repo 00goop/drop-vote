@@ -50,7 +50,8 @@ export default function PollPage() {
     if (closed || myVote?.data.optionIndex === optionIndex) return
     try {
       if (myVote) await voteMut.putConfirmed(myVote.recordId, { optionIndex })
-      else await voteMut.createConfirmed({ pollId: id, voterId: '', optionIndex })
+      // voterId is omitted: the server stamps it from the signed-in user (userBound).
+      else await voteMut.createConfirmed({ pollId: id, optionIndex } as Vote)
     } catch (err) {
       toastError('Vote not saved', err instanceof Error ? err.message : undefined)
     }

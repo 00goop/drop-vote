@@ -79,12 +79,12 @@ function CreatePoll() {
     if (problem) return
     setSubmitting(true)
     try {
+      // ownerId is omitted: the server stamps it from the signed-in user (userBound).
       const id = await createConfirmed({
         title: title.trim(),
         options: JSON.stringify(options.map((o) => o.trim()).filter(Boolean)),
-        ownerId: '', // stamped server-side (userBound)
         closed: 0,
-      })
+      } as Poll)
       navigate(`/poll/${id}`)
     } catch (err) {
       toastError('Could not create poll', err instanceof Error ? err.message : undefined)
